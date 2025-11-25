@@ -2,15 +2,19 @@ import { useState } from "react";
 import { InventoryCard } from "@/components/InventoryCard";
 import { FilterSidebar } from "@/components/FilterSidebar";
 import { AddItemDialog } from "@/components/AddItemDialog";
+import { TagFilter } from "@/components/TagFilter";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Search, Grid3x3, List } from "lucide-react";
+import { Search, Grid3x3, List } from "lucide-react";
 
 export default function Inventory() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  //todo: remove mock inventory data
   const items = [
     {
       id: "1",
@@ -80,18 +84,20 @@ export default function Inventory() {
     },
   ];
 
+  const allTags = ["Pokemon", "Holo", "Rare", "Funko", "Marvel", "Sneakers", "Limited", "MTG", "Power Nine", "Autographed", "Baseball", "Supreme", "Streetwear"];
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-heading font-bold text-foreground">Inventory</h1>
-          <p className="text-muted-foreground mt-1">Manage your items and listings</p>
-        </div>
-        <Button onClick={() => setAddDialogOpen(true)} data-testid="button-add-item">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Item
-        </Button>
+      <div>
+        <h1 className="text-4xl font-heading font-bold text-foreground">Inventory</h1>
+        <p className="text-muted-foreground mt-1">Manage your items and listings</p>
       </div>
+
+      <TagFilter
+        tags={allTags}
+        selectedTags={selectedTags}
+        onSelectionChange={setSelectedTags}
+      />
 
       <div className="flex gap-4">
         <div className="flex-1">
@@ -150,6 +156,7 @@ export default function Inventory() {
       </div>
 
       <AddItemDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+      <FloatingActionButton onClick={() => setAddDialogOpen(true)} />
     </div>
   );
 }

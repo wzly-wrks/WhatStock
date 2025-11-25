@@ -3,6 +3,7 @@ import { StatsCard } from "@/components/StatsCard";
 import { DollarSign, TrendingUp, ShoppingCart, Package } from "lucide-react";
 
 export default function Orders() {
+  //todo: remove mock orders data
   const orders = [
     {
       id: "1",

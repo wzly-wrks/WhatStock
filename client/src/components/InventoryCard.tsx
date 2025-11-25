@@ -1,4 +1,4 @@
-import { Edit, Copy, Trash2, DollarSign } from "lucide-react";
+import { Edit, Copy, Trash2 } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,26 +37,30 @@ export function InventoryCard({
   const profitPercentage = ((profit / purchasePrice) * 100).toFixed(0);
 
   const statusConfig = {
-    in_stock: { label: "In Stock", className: "bg-chart-3 text-white" },
-    sold: { label: "Sold", className: "bg-chart-2 text-white" },
-    draft: { label: "Draft", className: "bg-muted text-muted-foreground" },
+    in_stock: { label: "In Stock", className: "bg-primary" },
+    sold: { label: "Sold", className: "bg-chart-2" },
+    draft: { label: "Draft", className: "bg-muted" },
   };
 
   return (
-    <Card className="overflow-hidden group hover-elevate">
-      <div className="relative aspect-square bg-muted">
+    <Card className="overflow-hidden group hover-elevate transition-all duration-300 border border-card-border hover:border-primary/50 animate-slide-up">
+      <div className="relative aspect-square bg-muted overflow-hidden">
         {imageUrl ? (
-          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+          <img
+            src={imageUrl}
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-secondary">
             <Package className="w-12 h-12" />
           </div>
         )}
-        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200">
           <Button
             size="icon"
             variant="secondary"
-            className="h-8 w-8"
+            className="h-8 w-8 backdrop-blur-sm"
             onClick={onEdit}
             data-testid="button-edit-item"
           >
@@ -65,7 +69,7 @@ export function InventoryCard({
           <Button
             size="icon"
             variant="secondary"
-            className="h-8 w-8"
+            className="h-8 w-8 backdrop-blur-sm"
             onClick={onDuplicate}
             data-testid="button-duplicate-item"
           >
@@ -74,49 +78,50 @@ export function InventoryCard({
           <Button
             size="icon"
             variant="destructive"
-            className="h-8 w-8"
+            className="h-8 w-8 backdrop-blur-sm"
             onClick={onDelete}
             data-testid="button-delete-item"
           >
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
-        <Badge className={`absolute top-2 left-2 ${statusConfig[status].className}`}>
+        <Badge className={`absolute top-2 left-2 text-xs font-bold ${statusConfig[status].className}`}>
           {statusConfig[status].label}
         </Badge>
       </div>
-      <CardHeader className="space-y-1 pb-3">
-        <h3 className="font-heading font-semibold text-base line-clamp-1" data-testid="text-item-title">
+      <CardHeader className="space-y-2 pb-2">
+        <h3 className="font-heading font-bold text-sm line-clamp-2" data-testid="text-item-title">
           {title}
         </h3>
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>{category}</span>
-          <span>{condition}</span>
-        </div>
-      </CardHeader>
-      <CardContent className="pb-3">
-        <div className="flex flex-wrap gap-1 mb-3">
+        <div className="flex flex-wrap gap-1">
           {tags.map((tag, idx) => (
-            <Badge key={idx} variant="secondary" className="text-xs">
+            <Badge key={idx} variant="outline" className="text-xs bg-muted/50 border-primary/30">
               {tag}
             </Badge>
           ))}
         </div>
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div>
-            <div className="text-xs text-muted-foreground">Purchase</div>
-            <div className="font-semibold">${purchasePrice.toFixed(2)}</div>
+      </CardHeader>
+      <CardContent className="pb-2">
+        <div className="space-y-1">
+          <div className="text-xs text-muted-foreground flex justify-between">
+            <span>{category}</span>
+            <span>{condition}</span>
           </div>
-          <div>
-            <div className="text-xs text-muted-foreground">Selling</div>
-            <div className="font-semibold text-primary">${sellingPrice.toFixed(2)}</div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <div className="text-muted-foreground">Purchase</div>
+              <div className="font-semibold">${purchasePrice.toFixed(2)}</div>
+            </div>
+            <div>
+              <div className="text-muted-foreground">Selling</div>
+              <div className="font-bold text-primary">${sellingPrice.toFixed(2)}</div>
+            </div>
           </div>
         </div>
       </CardContent>
-      <CardFooter className="pt-3 border-t flex items-center justify-between">
-        <div className="text-xs text-muted-foreground">Qty: {quantity}</div>
-        <div className={`text-xs font-semibold flex items-center gap-1 ${profit >= 0 ? 'text-chart-3' : 'text-destructive'}`}>
-          <DollarSign className="w-3 h-3" />
+      <CardFooter className="pt-2 border-t border-card-border flex items-center justify-between text-xs">
+        <div className="text-muted-foreground">Qty: {quantity}</div>
+        <div className={`font-bold flex items-center gap-1 ${profit >= 0 ? 'text-primary' : 'text-destructive'}`}>
           {profit >= 0 ? '+' : ''}{profitPercentage}%
         </div>
       </CardFooter>

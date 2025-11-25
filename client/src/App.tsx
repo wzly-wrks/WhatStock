@@ -33,13 +33,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <SidebarProvider style={style as React.CSSProperties}>
-          <div className="flex h-screen w-full">
+          <div className="flex h-screen w-full dark bg-background">
             <AppSidebar />
             <div className="flex flex-col flex-1 overflow-hidden">
               <header className="flex items-center gap-4 border-b px-6 py-3 bg-card">
                 <SidebarTrigger data-testid="button-sidebar-toggle" />
-                <h1 className="font-heading font-semibold text-lg text-primary">
-                  Whatnot Inventory Manager
+                <h1 className="font-heading font-bold text-xl text-primary">
+                  LootLedger
                 </h1>
               </header>
               <main className="flex-1 overflow-auto p-6 bg-background">

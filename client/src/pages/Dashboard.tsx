@@ -1,13 +1,15 @@
 import { StatsCard } from "@/components/StatsCard";
 import { InventoryCard } from "@/components/InventoryCard";
-import { Package, DollarSign, TrendingUp, ShoppingCart, Plus } from "lucide-react";
+import { Package, DollarSign, TrendingUp, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AddItemDialog } from "@/components/AddItemDialog";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 
 export default function Dashboard() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
+  //todo: remove mock inventory data
   const recentItems = [
     {
       id: "1",
@@ -57,15 +59,9 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-heading font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Welcome back! Here's your inventory overview.</p>
-        </div>
-        <Button onClick={() => setAddDialogOpen(true)} data-testid="button-add-item">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Item
-        </Button>
+      <div>
+        <h1 className="text-4xl font-heading font-bold text-foreground">Dashboard</h1>
+        <p className="text-muted-foreground mt-1">Welcome back! Here's your inventory overview.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -118,6 +114,7 @@ export default function Dashboard() {
       </div>
 
       <AddItemDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+      <FloatingActionButton onClick={() => setAddDialogOpen(true)} />
     </div>
   );
 }

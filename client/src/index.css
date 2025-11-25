@@ -2,43 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-/* LIGHT MODE */
+/* DARK MODE (LOOTLEDGER) */
 :root {
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
-  --opaque-button-border-intensity: -8;
-  --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
-  --background: 250 100% 99%;
-  --foreground: 240 5% 18%;
-  --border: 250 20% 92%;
-  --card: 250 60% 97%;
-  --card-foreground: 240 5% 18%;
-  --card-border: 250 30% 94%;
-  --sidebar: 250 50% 95%;
-  --sidebar-foreground: 240 5% 18%;
-  --sidebar-border: 250 35% 91%;
-  --sidebar-primary: 255 68% 64%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 250 40% 92%;
-  --sidebar-accent-foreground: 240 5% 18%;
-  --sidebar-ring: 255 68% 64%;
-  --popover: 250 45% 93%;
-  --popover-foreground: 240 5% 18%;
-  --popover-border: 250 30% 89%;
-  --primary: 255 68% 64%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 250 35% 88%;
-  --secondary-foreground: 240 5% 18%;
-  --muted: 250 25% 90%;
-  --muted-foreground: 240 4% 40%;
-  --accent: 250 30% 91%;
-  --accent-foreground: 240 5% 18%;
+  --button-outline: rgba(244, 228, 61, 0.2);
+  --badge-outline: rgba(244, 228, 61, 0.1);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(244, 228, 61, 0.08);
+  --elevate-2: rgba(244, 228, 61, 0.15);
+  --background: 0 0% 6.7%;
+  --foreground: 0 0% 100%;
+  --border: 0 0% 15%;
+  --card: 0 0% 11%;
+  --card-foreground: 0 0% 100%;
+  --card-border: 0 0% 18%;
+  --sidebar: 0 0% 10%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-border: 0 0% 16%;
+  --sidebar-primary: 53 94% 62%;
+  --sidebar-primary-foreground: 0 0% 6.7%;
+  --sidebar-accent: 0 0% 20%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 53 94% 62%;
+  --popover: 0 0% 13%;
+  --popover-foreground: 0 0% 100%;
+  --popover-border: 0 0% 20%;
+  --primary: 53 94% 62%;
+  --primary-foreground: 0 0% 6.7%;
+  --secondary: 0 0% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 25%;
+  --muted-foreground: 0 0% 70%;
+  --accent: 53 94% 62%;
+  --accent-foreground: 0 0% 6.7%;
   --destructive: 0 84% 48%;
   --destructive-foreground: 0 0% 100%;
-  --input: 250 30% 80%;
-  --ring: 255 68% 64%;
-  --chart-1: 255 68% 58%;
+  --input: 0 0% 20%;
+  --ring: 53 94% 62%;
+  --chart-1: 53 94% 62%;
   --chart-2: 45 93% 58%;
   --chart-3: 173 80% 40%;
   --chart-4: 280 65% 60%;
@@ -47,14 +47,14 @@
   --font-serif: Poppins, sans-serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem;
-  --shadow-2xs: 0px 2px 0px 0px hsl(240 5% 18% / 0.00);
-  --shadow-xs: 0px 2px 0px 0px hsl(240 5% 18% / 0.00);
-  --shadow-sm: 0px 2px 0px 0px hsl(240 5% 18% / 0.00), 0px 1px 2px -1px hsl(240 5% 18% / 0.00);
-  --shadow: 0px 2px 0px 0px hsl(240 5% 18% / 0.00), 0px 1px 2px -1px hsl(240 5% 18% / 0.00);
-  --shadow-md: 0px 2px 0px 0px hsl(240 5% 18% / 0.00), 0px 2px 4px -1px hsl(240 5% 18% / 0.00);
-  --shadow-lg: 0px 2px 0px 0px hsl(240 5% 18% / 0.00), 0px 4px 6px -1px hsl(240 5% 18% / 0.00);
-  --shadow-xl: 0px 2px 0px 0px hsl(240 5% 18% / 0.00), 0px 8px 10px -1px hsl(240 5% 18% / 0.00);
-  --shadow-2xl: 0px 2px 0px 0px hsl(240 5% 18% / 0.00);
+  --shadow-2xs: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-xs: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0px 4px 8px rgba(0, 0, 0, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow: 0px 4px 8px rgba(0, 0, 0, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0px 12px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0px 16px 32px rgba(0, 0, 0, 0.7);
+  --shadow-2xl: 0px 20px 40px rgba(0, 0, 0, 0.8);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -88,53 +88,53 @@
 }
 
 .dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
+  --button-outline: rgba(244, 228, 61, 0.2);
+  --badge-outline: rgba(244, 228, 61, 0.1);
   --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(255,255,255, .04);
-  --elevate-2: rgba(255,255,255, .09);
-  --background: 245 5% 8%;
-  --foreground: 250 5% 95%;
-  --border: 245 6% 16%;
-  --card: 245 5% 10%;
-  --card-foreground: 250 5% 95%;
-  --card-border: 245 6% 13%;
-  --sidebar: 245 5% 12%;
-  --sidebar-foreground: 250 5% 95%;
-  --sidebar-border: 245 6% 15%;
-  --sidebar-primary: 255 68% 64%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 245 8% 16%;
-  --sidebar-accent-foreground: 250 5% 95%;
-  --sidebar-ring: 255 68% 64%;
-  --popover: 245 5% 14%;
-  --popover-foreground: 250 5% 95%;
-  --popover-border: 245 6% 17%;
-  --primary: 255 68% 64%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 245 6% 18%;
-  --secondary-foreground: 250 5% 95%;
-  --muted: 245 6% 17%;
-  --muted-foreground: 250 4% 65%;
-  --accent: 245 7% 16%;
-  --accent-foreground: 250 5% 95%;
+  --elevate-1: rgba(244, 228, 61, 0.08);
+  --elevate-2: rgba(244, 228, 61, 0.15);
+  --background: 0 0% 6.7%;
+  --foreground: 0 0% 100%;
+  --border: 0 0% 15%;
+  --card: 0 0% 11%;
+  --card-foreground: 0 0% 100%;
+  --card-border: 0 0% 18%;
+  --sidebar: 0 0% 10%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-border: 0 0% 16%;
+  --sidebar-primary: 53 94% 62%;
+  --sidebar-primary-foreground: 0 0% 6.7%;
+  --sidebar-accent: 0 0% 20%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-ring: 53 94% 62%;
+  --popover: 0 0% 13%;
+  --popover-foreground: 0 0% 100%;
+  --popover-border: 0 0% 20%;
+  --primary: 53 94% 62%;
+  --primary-foreground: 0 0% 6.7%;
+  --secondary: 0 0% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 25%;
+  --muted-foreground: 0 0% 70%;
+  --accent: 53 94% 62%;
+  --accent-foreground: 0 0% 6.7%;
   --destructive: 0 84% 48%;
   --destructive-foreground: 0 0% 100%;
-  --input: 245 10% 25%;
-  --ring: 255 68% 64%;
-  --chart-1: 255 75% 70%;
-  --chart-2: 45 95% 65%;
-  --chart-3: 173 65% 55%;
-  --chart-4: 280 70% 72%;
-  --chart-5: 30 85% 65%;
-  --shadow-2xs: 0px 2px 0px 0px hsl(250 5% 95% / 0.00);
-  --shadow-xs: 0px 2px 0px 0px hsl(250 5% 95% / 0.00);
-  --shadow-sm: 0px 2px 0px 0px hsl(250 5% 95% / 0.00), 0px 1px 2px -1px hsl(250 5% 95% / 0.00);
-  --shadow: 0px 2px 0px 0px hsl(250 5% 95% / 0.00), 0px 1px 2px -1px hsl(250 5% 95% / 0.00);
-  --shadow-md: 0px 2px 0px 0px hsl(250 5% 95% / 0.00), 0px 2px 4px -1px hsl(250 5% 95% / 0.00);
-  --shadow-lg: 0px 2px 0px 0px hsl(250 5% 95% / 0.00), 0px 4px 6px -1px hsl(250 5% 95% / 0.00);
-  --shadow-xl: 0px 2px 0px 0px hsl(250 5% 95% / 0.00), 0px 8px 10px -1px hsl(250 5% 95% / 0.00);
-  --shadow-2xl: 0px 2px 0px 0px hsl(250 5% 95% / 0.00);
+  --input: 0 0% 20%;
+  --ring: 53 94% 62%;
+  --chart-1: 53 94% 62%;
+  --chart-2: 45 93% 58%;
+  --chart-3: 173 80% 40%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 30 80% 55%;
+  --shadow-2xs: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-xs: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0px 4px 8px rgba(0, 0, 0, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow: 0px 4px 8px rgba(0, 0, 0, 0.4), 0px 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0px 12px 24px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0px 16px 32px rgba(0, 0, 0, 0.7);
+  --shadow-2xl: 0px 20px 40px rgba(0, 0, 0, 0.8);
 
 /* Fallback for older browsers */
   --sidebar-primary-border: hsl(var(--sidebar-primary));
@@ -196,6 +196,62 @@
  * need to be distinguished from eachother visually.
  */
 @layer utilities {
+  /* Animations */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes bounce-subtle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(244, 228, 61, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(244, 228, 61, 0.5);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s infinite;
+  }
 
   /* Hide ugly search cancel button in Chrome until we can style it properly */
   input[type="search"]::-webkit-search-cancel-button {
