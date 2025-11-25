@@ -9,7 +9,7 @@ export function FloatingActionButton({ onClick }: FloatingActionButtonProps) {
   return (
     <Button
       onClick={onClick}
-      className="fixed bottom-8 right-8 rounded-full h-14 w-14 shadow-lg hover-elevate active-elevate-2 animate-bounce-subtle"
+      className="fixed bottom-6 right-6 rounded-full h-14 w-14 shadow-lg hover-elevate active-elevate-2 animate-bounce-subtle z-50"
       data-testid="button-fab-add-item"
     >
       <Plus className="w-6 h-6" />
