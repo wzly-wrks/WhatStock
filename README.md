@@ -1,10 +1,10 @@
-# LootLedger - Whatnot Inventory Management Application
+# WhatStock - Whatnot Inventory Management Application
 
-A comprehensive inventory management application designed for Whatnot marketplace sellers to track collectibles, manage sales, and export listings in Whatnot's CSV format. LootLedger helps you manage your collectibles efficiently and grow your business.
+A comprehensive inventory management application designed for Whatnot marketplace sellers to track collectibles, manage sales, and export listings in Whatnot's CSV format. WhatStock helps you manage your collectibles efficiently and grow your business.
 
 ## Overview
 
-LootLedger provides sellers with an intuitive platform to:
+WhatStock provides sellers with an intuitive platform to:
 - **Catalog items** with photos, pricing, conditions, and tags
 - **Track inventory** with real-time statistics and analytics
 - **Manage sales** with buyer information and sold item tracking
@@ -363,7 +363,7 @@ npm run dev  # or use production build command
 
 ## Contributing
 
-When contributing to LootLedger:
+When contributing to WhatStock:
 
 1. Follow TypeScript best practices
 2. Maintain dark theme design consistency

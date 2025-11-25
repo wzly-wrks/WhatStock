@@ -5,73 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Settings as SettingsIcon, Bell, Database, FileText, Palette } from "lucide-react";
+import { Database, FileText, Palette } from "lucide-react";
 
 export default function Settings() {
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-4xl font-heading font-bold text-foreground">Settings</h1>
-        <p className="text-muted-foreground mt-1">Manage your LootLedger preferences</p>
+        <p className="text-muted-foreground mt-1">Manage your WhatStock preferences</p>
       </div>
 
       <div className="grid gap-6">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <SettingsIcon className="w-5 h-5 text-primary" />
-              <CardTitle>General Settings</CardTitle>
-            </div>
-            <CardDescription>Configure your basic application settings</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="business-name">Business Name</Label>
-              <Input
-                id="business-name"
-                placeholder="Your Business Name"
-                defaultValue="LootLedger Store"
-                data-testid="input-business-name"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="default-category">Default Category</Label>
-              <Input
-                id="default-category"
-                placeholder="e.g., Collectibles"
-                data-testid="input-default-category"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-primary" />
-              <CardTitle>Notifications</CardTitle>
-            </div>
-            <CardDescription>Manage how you receive notifications</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="notify-low-stock">Low Stock Alerts</Label>
-                <p className="text-sm text-muted-foreground">Get notified when items are running low</p>
-              </div>
-              <Switch id="notify-low-stock" defaultChecked data-testid="switch-low-stock" />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="notify-new-orders">New Order Notifications</Label>
-                <p className="text-sm text-muted-foreground">Receive alerts for new orders</p>
-              </div>
-              <Switch id="notify-new-orders" defaultChecked data-testid="switch-new-orders" />
-            </div>
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">

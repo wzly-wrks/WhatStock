@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Package, X } from "lucide-react";
+import { useEffect } from "react";
 
 interface ItemDetailModalProps {
   open: boolean;
@@ -22,14 +23,23 @@ interface ItemDetailModalProps {
     tags?: string[];
     weight?: number | string;
     description?: string;
+    buyerName?: string | null;
+    buyerEmail?: string | null;
+    soldDate?: string | null;
   };
   onMarkAsSold?: (buyerName: string, buyerEmail: string) => void;
+  onUnmarkSold?: () => void;
 }
 
-export function ItemDetailModal({ open, onOpenChange, item, onMarkAsSold }: ItemDetailModalProps) {
+export function ItemDetailModal({ open, onOpenChange, item, onMarkAsSold, onUnmarkSold }: ItemDetailModalProps) {
   const [buyerName, setBuyerName] = useState("");
   const [buyerEmail, setBuyerEmail] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
+
+  useEffect(() => {
+    setBuyerName("");
+    setBuyerEmail("");
+  }, [item.id]);
 
   const purchasePriceNum = typeof item.purchasePrice === 'string' ? parseFloat(item.purchasePrice) : item.purchasePrice;
   const sellingPriceNum = typeof item.sellingPrice === 'string' ? parseFloat(item.sellingPrice) : item.sellingPrice;
@@ -174,6 +184,38 @@ export function ItemDetailModal({ open, onOpenChange, item, onMarkAsSold }: Item
                         Mark as Sold
                       </Button>
                     </div>
+                  </div>
+                )}
+
+                {item.status === "sold" && (
+                  <div className="space-y-3 pt-2">
+                    <h3 className="font-semibold text-sm">Sale Details</h3>
+                    <div className="rounded-lg border border-card-border bg-muted/20 p-3 text-sm space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Buyer:</span>
+                        <span className="font-semibold">{item.buyerName || "Unknown"}</span>
+                      </div>
+                      {item.buyerEmail && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Email:</span>
+                          <span className="font-semibold">{item.buyerEmail}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Sold on:</span>
+                        <span className="font-semibold">
+                          {item.soldDate ? new Date(item.soldDate).toLocaleDateString() : "Pending"}
+                        </span>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => onUnmarkSold?.()}
+                      data-testid="button-unmark-sold"
+                      className="w-full"
+                    >
+                      Return to Inventory
+                    </Button>
                   </div>
                 )}
               </div>

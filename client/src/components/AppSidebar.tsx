@@ -47,7 +47,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-heading font-semibold text-primary px-4 py-6">
-            Whatnot Inventory
+            WhatStock
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

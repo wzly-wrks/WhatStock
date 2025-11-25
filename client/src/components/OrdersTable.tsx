@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Order {
   id: string;
@@ -19,14 +20,18 @@ interface Order {
   salePrice: number;
   profit: number;
   status: "completed" | "pending" | "shipped";
+  printedLabel: boolean;
+  packed: boolean;
+  shipped: boolean;
 }
 
 interface OrdersTableProps {
   orders: Order[];
   onViewDetails?: (orderId: string) => void;
+  onProgressChange?: (orderId: string, field: "printedLabel" | "packed" | "shipped", value: boolean) => void;
 }
 
-export function OrdersTable({ orders, onViewDetails }: OrdersTableProps) {
+export function OrdersTable({ orders, onViewDetails, onProgressChange }: OrdersTableProps) {
   const statusConfig = {
     completed: { label: "Completed", className: "bg-chart-3 text-white" },
     pending: { label: "Pending", className: "bg-chart-2 text-white" },
@@ -44,6 +49,9 @@ export function OrdersTable({ orders, onViewDetails }: OrdersTableProps) {
             <TableHead className="text-right">Purchase</TableHead>
             <TableHead className="text-right">Sale</TableHead>
             <TableHead className="text-right">Profit</TableHead>
+            <TableHead className="text-center">Printed Label</TableHead>
+            <TableHead className="text-center">Packed</TableHead>
+            <TableHead className="text-center">Shipped</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -64,6 +72,27 @@ export function OrdersTable({ orders, onViewDetails }: OrdersTableProps) {
                 <span className={order.profit >= 0 ? 'text-chart-3 font-semibold' : 'text-destructive font-semibold'}>
                   {order.profit >= 0 ? '+' : ''}${order.profit.toFixed(2)}
                 </span>
+              </TableCell>
+              <TableCell className="text-center">
+                <Checkbox
+                  checked={order.printedLabel}
+                  onCheckedChange={(checked) => onProgressChange?.(order.id, "printedLabel", Boolean(checked))}
+                  data-testid={`checkbox-printed-${order.id}`}
+                />
+              </TableCell>
+              <TableCell className="text-center">
+                <Checkbox
+                  checked={order.packed}
+                  onCheckedChange={(checked) => onProgressChange?.(order.id, "packed", Boolean(checked))}
+                  data-testid={`checkbox-packed-${order.id}`}
+                />
+              </TableCell>
+              <TableCell className="text-center">
+                <Checkbox
+                  checked={order.shipped}
+                  onCheckedChange={(checked) => onProgressChange?.(order.id, "shipped", Boolean(checked))}
+                  data-testid={`checkbox-shipped-${order.id}`}
+                />
               </TableCell>
               <TableCell>
                 <Badge className={statusConfig[order.status].className}>

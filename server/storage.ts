@@ -16,6 +16,7 @@ export interface IStorage {
   updateInventoryItem(id: string, updates: Partial<InventoryItem>): Promise<InventoryItem | undefined>;
   deleteInventoryItem(id: string): Promise<boolean>;
   markItemAsSold(id: string, buyerName: string, buyerEmail: string): Promise<InventoryItem | undefined>;
+  unmarkItemAsSold(id: string): Promise<InventoryItem | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -103,6 +104,22 @@ export class MemStorage implements IStorage {
       buyerEmail,
       soldDate: new Date(),
     };
+    this.inventoryItems.set(id, updatedItem);
+    return updatedItem;
+  }
+
+  async unmarkItemAsSold(id: string): Promise<InventoryItem | undefined> {
+    const item = this.inventoryItems.get(id);
+    if (!item) return undefined;
+
+    const updatedItem: InventoryItem = {
+      ...item,
+      status: "in_stock",
+      buyerName: null,
+      buyerEmail: null,
+      soldDate: null,
+    };
+
     this.inventoryItems.set(id, updatedItem);
     return updatedItem;
   }

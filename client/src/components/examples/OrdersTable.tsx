@@ -10,6 +10,9 @@ const mockOrders = [
     salePrice: 299.99,
     profit: 149.99,
     status: "completed" as const,
+    printedLabel: true,
+    packed: true,
+    shipped: false,
   },
   {
     id: "2",
@@ -20,6 +23,9 @@ const mockOrders = [
     salePrice: 89.99,
     profit: 44.99,
     status: "shipped" as const,
+    printedLabel: true,
+    packed: true,
+    shipped: true,
   },
   {
     id: "3",
@@ -30,6 +36,9 @@ const mockOrders = [
     salePrice: 450,
     profit: 250,
     status: "pending" as const,
+    printedLabel: false,
+    packed: false,
+    shipped: false,
   },
 ];
 
@@ -39,6 +48,7 @@ export default function OrdersTableExample() {
       <OrdersTable
         orders={mockOrders}
         onViewDetails={(id) => console.log("View order", id)}
+        onProgressChange={(id, stage, value) => console.log("Update", id, stage, value)}
       />
     </div>
   );

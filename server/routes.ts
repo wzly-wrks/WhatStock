@@ -69,6 +69,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/inventory/:id/unsold", async (req, res) => {
+    try {
+      const item = await storage.unmarkItemAsSold(req.params.id);
+      if (!item) {
+        res.status(404).json({ error: "Item not found" });
+        return;
+      }
+      res.json(item);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
