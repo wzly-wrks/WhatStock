@@ -1,65 +1,50 @@
+import { useQuery } from "@tanstack/react-query";
 import { OrdersTable } from "@/components/OrdersTable";
 import { StatsCard } from "@/components/StatsCard";
 import { DollarSign, TrendingUp, ShoppingCart, Package } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import type { InventoryItem } from "@shared/schema";
 
 export default function Orders() {
-  //todo: remove mock orders data
-  const orders = [
-    {
-      id: "1",
-      itemTitle: "Vintage Pokemon Card - Charizard Holo",
-      buyer: "john.doe@email.com",
-      saleDate: "2024-01-15",
-      purchasePrice: 150,
-      salePrice: 299.99,
-      profit: 149.99,
-      status: "completed" as const,
+  const { data: items = [], isLoading } = useQuery({
+    queryKey: ["/api/inventory"],
+    queryFn: async () => {
+      const res = await apiRequest("GET", "/api/inventory");
+      return res.json() as Promise<InventoryItem[]>;
     },
-    {
-      id: "2",
-      itemTitle: "Funko Pop - Iron Man #01",
-      buyer: "jane.smith@email.com",
-      saleDate: "2024-01-14",
-      purchasePrice: 45,
-      salePrice: 89.99,
-      profit: 44.99,
-      status: "shipped" as const,
-    },
-    {
-      id: "3",
-      itemTitle: "Sealed Nike Sneakers - Air Jordan 1",
-      buyer: "mike.jones@email.com",
-      saleDate: "2024-01-13",
-      purchasePrice: 200,
-      salePrice: 450,
-      profit: 250,
-      status: "pending" as const,
-    },
-    {
-      id: "4",
-      itemTitle: "Magic The Gathering - Black Lotus",
-      buyer: "sarah.wilson@email.com",
-      saleDate: "2024-01-12",
-      purchasePrice: 5000,
-      salePrice: 8500,
-      profit: 3500,
-      status: "completed" as const,
-    },
-    {
-      id: "5",
-      itemTitle: "Supreme Box Logo Hoodie",
-      buyer: "alex.brown@email.com",
-      saleDate: "2024-01-11",
-      purchasePrice: 300,
-      salePrice: 650,
-      profit: 350,
-      status: "completed" as const,
-    },
-  ];
+  });
+
+  const soldItems = items.filter((item) => item.status === "sold");
+
+  const orders = soldItems.map((item) => {
+    const purchasePrice =
+      typeof item.purchasePrice === "string"
+        ? parseFloat(item.purchasePrice)
+        : item.purchasePrice;
+    const salePrice =
+      typeof item.sellingPrice === "string"
+        ? parseFloat(item.sellingPrice)
+        : item.sellingPrice;
+
+    const saleDate = item.soldDate
+      ? new Date(item.soldDate).toLocaleDateString()
+      : "Pending";
+
+    return {
+      id: item.id,
+      itemTitle: item.title,
+      buyer: item.buyerEmail || item.buyerName || "Unknown buyer",
+      saleDate,
+      purchasePrice,
+      salePrice,
+      profit: salePrice - purchasePrice,
+      status: item.soldDate ? "completed" as const : "pending" as const,
+    };
+  });
 
   const totalRevenue = orders.reduce((sum, order) => sum + order.salePrice, 0);
   const totalProfit = orders.reduce((sum, order) => sum + order.profit, 0);
-  const avgProfit = totalProfit / orders.length;
+  const avgProfit = orders.length > 0 ? totalProfit / orders.length : 0;
 
   return (
     <div className="space-y-6">
@@ -97,11 +82,17 @@ export default function Orders() {
 
       <div>
         <h2 className="text-xl font-heading font-semibold mb-4">Order History</h2>
-        <OrdersTable
-          orders={orders}
-          onViewDetails={(id) => console.log("View order details:", id)}
-        />
+        {orders.length === 0 ? (
+          <div className="rounded-lg border border-dashed p-6 text-center text-muted-foreground">
+            {isLoading ? "Loading orders..." : "No completed orders yet."}
+          </div>
+        ) : (
+          <OrdersTable
+            orders={orders}
+            onViewDetails={(id) => console.log("View order details:", id)}
+          />
+        )}
       </div>
-    </div>
-  );
-}
+      </div>
+    );
+  }

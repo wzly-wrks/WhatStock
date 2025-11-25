@@ -72,19 +72,31 @@ export default function Dashboard() {
 
   // Calculate stats
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const asNumber = (value: number | string) =>
+    typeof value === "string" ? parseFloat(value) : value;
+
   const totalValue = items.reduce((sum, item) => {
-    const sellingPrice = typeof item.sellingPrice === 'string' ? parseFloat(item.sellingPrice) : item.sellingPrice;
-    return sum + (sellingPrice * item.quantity);
+    const sellingPrice = asNumber(item.sellingPrice);
+    return sum + sellingPrice * item.quantity;
   }, 0);
 
-  const inStock = items.filter(item => item.status === 'in_stock').reduce((sum, item) => sum + item.quantity, 0);
-  const profitMargin = items.length > 0 
-    ? ((items.reduce((sum, item) => {
-        const purchase = typeof item.purchasePrice === 'string' ? parseFloat(item.purchasePrice) : item.purchasePrice;
-        const selling = typeof item.sellingPrice === 'string' ? parseFloat(item.sellingPrice) : item.sellingPrice;
-        return sum + ((selling - purchase) / purchase * 100);
-      }, 0)) / items.length).toFixed(0)
-    : 0;
+  const inStock = items
+    .filter((item) => item.status === "in_stock")
+    .reduce((sum, item) => sum + item.quantity, 0);
+
+  const profitMargins = items
+    .map((item) => {
+      const purchase = asNumber(item.purchasePrice);
+      const selling = asNumber(item.sellingPrice);
+      if (!purchase || !Number.isFinite(purchase)) return null;
+      return ((selling - purchase) / purchase) * 100;
+    })
+    .filter((value): value is number => value !== null && Number.isFinite(value));
+
+  const profitMargin =
+    profitMargins.length > 0
+      ? (profitMargins.reduce((sum, value) => sum + value, 0) / profitMargins.length).toFixed(0)
+      : "0";
 
   return (
     <div className="space-y-6">

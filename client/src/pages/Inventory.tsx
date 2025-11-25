@@ -194,8 +194,24 @@ export default function Inventory() {
     },
   ];
 
-  // Use mock data if API is empty, otherwise use real data
-  const displayItems = isLoading ? mockItems : (items.length > 0 ? items : mockItems);
+  const rawItems = isLoading ? mockItems : items;
+
+  const normalizedSearch = searchQuery.trim().toLowerCase();
+  const filteredItems = rawItems.filter((item) => {
+    const matchesSearch =
+      !normalizedSearch ||
+      item.title.toLowerCase().includes(normalizedSearch) ||
+      (item.description?.toLowerCase().includes(normalizedSearch) ?? false) ||
+      (item.tags?.some((tag) => tag.toLowerCase().includes(normalizedSearch)) ?? false);
+
+    const matchesTags =
+      selectedTags.length === 0 ||
+      (item.tags?.some((tag) => selectedTags.includes(tag)) ?? false);
+
+    return matchesSearch && matchesTags;
+  });
+
+  const displayItems = filteredItems;
 
   const allTags = ["Pokemon", "Holo", "Rare", "Funko", "Marvel", "Sneakers", "Limited", "MTG", "Power Nine", "Autographed", "Baseball", "Supreme", "Streetwear"];
 
@@ -286,31 +302,46 @@ export default function Inventory() {
               Showing {displayItems.length} items
             </div>
           )}
-          <div className={viewMode === "grid" ? (
-            cardSize === '1' 
-              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4'
-              : cardSize === '2'
-              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
-              : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
-          ) : "space-y-4"}>
-            {displayItems.map((item: any) => (
-              <InventoryCard
-                key={item.id}
-                {...item}
-                isGiveaway={!!item.isGiveaway}
-                onClick={() => {
-                  setSelectedItem(item);
-                  setDetailModalOpen(true);
-                }}
-                onEdit={() => {
-                  setEditingItem(item);
-                  setEditDialogOpen(true);
-                }}
-                onDuplicate={() => console.log("Duplicate", item.id)}
-                onDelete={() => deleteItemMutation.mutate(item.id)}
-                onToggleGiveaway={() => toggleGiveawayMutation.mutate(item)}
-              />
-            ))}
+          <div
+            className={
+              viewMode === "grid"
+                ? cardSize === "1"
+                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
+                  : cardSize === "2"
+                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+                    : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                : "space-y-4"
+            }
+          >
+            {displayItems.length === 0 ? (
+              <div className="col-span-full flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+                <p className="text-sm">No items match your filters yet.</p>
+                {!isLoading && (
+                  <Button size="sm" onClick={() => setAddDialogOpen(true)}>
+                    Add your first item
+                  </Button>
+                )}
+              </div>
+            ) : (
+              displayItems.map((item: any) => (
+                <InventoryCard
+                  key={item.id}
+                  {...item}
+                  isGiveaway={!!item.isGiveaway}
+                  onClick={() => {
+                    setSelectedItem(item);
+                    setDetailModalOpen(true);
+                  }}
+                  onEdit={() => {
+                    setEditingItem(item);
+                    setEditDialogOpen(true);
+                  }}
+                  onDuplicate={() => console.log("Duplicate", item.id)}
+                  onDelete={() => deleteItemMutation.mutate(item.id)}
+                  onToggleGiveaway={() => toggleGiveawayMutation.mutate(item)}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>
