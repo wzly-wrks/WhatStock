@@ -318,9 +318,13 @@ export default function Inventory() {
       <AddItemDialog 
         open={addDialogOpen} 
         onOpenChange={setAddDialogOpen}
-        onItemAdded={() => {
-          queryClient.invalidateQueries({ queryKey: ["/api/inventory"] });
-          setAddDialogOpen(false);
+        onSubmit={async (data) => {
+          try {
+            await apiRequest("POST", "/api/inventory", data);
+            queryClient.invalidateQueries({ queryKey: ["/api/inventory"] });
+          } catch (error) {
+            console.error("Failed to add item:", error);
+          }
         }}
       />
       <EditItemDialog

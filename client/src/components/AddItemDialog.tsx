@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -31,6 +31,15 @@ interface AddItemDialogProps {
 export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: AddItemDialogProps) {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [category, setCategory] = useState("");
+  const [condition, setCondition] = useState("");
+
+  const titleRef = useRef<HTMLInputElement>(null);
+  const purchasePriceRef = useRef<HTMLInputElement>(null);
+  const sellingPriceRef = useRef<HTMLInputElement>(null);
+  const quantityRef = useRef<HTMLInputElement>(null);
+  const weightRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
@@ -45,10 +54,35 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted");
-    onSubmit?.({}); 
+    
+    const itemData = {
+      title: titleRef.current?.value,
+      category,
+      condition,
+      purchasePrice: parseFloat(purchasePriceRef.current?.value || "0"),
+      sellingPrice: parseFloat(sellingPriceRef.current?.value || "0"),
+      quantity: parseInt(quantityRef.current?.value || "1"),
+      weight: weightRef.current?.value ? parseFloat(weightRef.current.value) : undefined,
+      description: descriptionRef.current?.value,
+      tags,
+      status: "in_stock",
+    };
+
+    console.log("Form submitted with data:", itemData);
+    onSubmit?.(itemData);
     onItemAdded?.();
     onOpenChange(false);
+    
+    // Reset form
+    setTags([]);
+    setCategory("");
+    setCondition("");
+    if (titleRef.current) titleRef.current.value = "";
+    if (purchasePriceRef.current) purchasePriceRef.current.value = "";
+    if (sellingPriceRef.current) sellingPriceRef.current.value = "";
+    if (quantityRef.current) quantityRef.current.value = "1";
+    if (weightRef.current) weightRef.current.value = "";
+    if (descriptionRef.current) descriptionRef.current.value = "";
   };
 
   return (
@@ -66,6 +100,7 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
               <Label htmlFor="title">Title *</Label>
               <Input
                 id="title"
+                ref={titleRef}
                 placeholder="e.g., Vintage Pokemon Card - Charizard"
                 required
                 data-testid="input-title"
@@ -75,7 +110,7 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
-                <Select required>
+                <Select value={category} onValueChange={setCategory} required>
                   <SelectTrigger id="category" data-testid="select-category">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -85,13 +120,15 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
                     <SelectItem value="toys">Toys & Games</SelectItem>
                     <SelectItem value="fashion">Fashion</SelectItem>
                     <SelectItem value="electronics">Electronics</SelectItem>
+                    <SelectItem value="shoes">Shoes</SelectItem>
+                    <SelectItem value="sports-memorabilia">Sports Memorabilia</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="condition">Condition *</Label>
-                <Select required>
+                <Select value={condition} onValueChange={setCondition} required>
                   <SelectTrigger id="condition" data-testid="select-condition">
                     <SelectValue placeholder="Select condition" />
                   </SelectTrigger>
@@ -114,6 +151,7 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
                   <Input
                     id="purchase-price"
+                    ref={purchasePriceRef}
                     type="number"
                     step="0.01"
                     placeholder="0.00"
@@ -130,6 +168,7 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
                   <Input
                     id="selling-price"
+                    ref={sellingPriceRef}
                     type="number"
                     step="0.01"
                     placeholder="0.00"
@@ -144,6 +183,7 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
                 <Label htmlFor="quantity">Quantity *</Label>
                 <Input
                   id="quantity"
+                  ref={quantityRef}
                   type="number"
                   min="1"
                   defaultValue="1"
@@ -154,9 +194,22 @@ export function AddItemDialog({ open, onOpenChange, onSubmit, onItemAdded }: Add
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="weight">Weight (lbs)</Label>
+              <Input
+                id="weight"
+                ref={weightRef}
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                data-testid="input-weight"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
+                ref={descriptionRef}
                 placeholder="Describe the item's features, condition details, etc."
                 rows={3}
                 data-testid="input-description"

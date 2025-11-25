@@ -14,13 +14,13 @@ interface ItemDetailModalProps {
     title: string;
     category: string;
     condition: string;
-    purchasePrice: number;
-    sellingPrice: number;
+    purchasePrice: number | string;
+    sellingPrice: number | string;
     quantity: number;
     status: "in_stock" | "sold" | "draft";
     imageUrl?: string;
     tags?: string[];
-    weight?: number;
+    weight?: number | string;
     description?: string;
   };
   onMarkAsSold?: (buyerName: string, buyerEmail: string) => void;
@@ -31,8 +31,11 @@ export function ItemDetailModal({ open, onOpenChange, item, onMarkAsSold }: Item
   const [buyerEmail, setBuyerEmail] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const profit = item.sellingPrice - item.purchasePrice;
-  const profitPercentage = ((profit / item.purchasePrice) * 100).toFixed(0);
+  const purchasePriceNum = typeof item.purchasePrice === 'string' ? parseFloat(item.purchasePrice) : item.purchasePrice;
+  const sellingPriceNum = typeof item.sellingPrice === 'string' ? parseFloat(item.sellingPrice) : item.sellingPrice;
+
+  const profit = sellingPriceNum - purchasePriceNum;
+  const profitPercentage = ((profit / purchasePriceNum) * 100).toFixed(0);
 
   const handleMarkAsSold = () => {
     if (buyerName && buyerEmail && onMarkAsSold) {
@@ -114,11 +117,11 @@ export function ItemDetailModal({ open, onOpenChange, item, onMarkAsSold }: Item
                 <div className="border-t border-b border-border py-3 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Purchase Price:</span>
-                    <span className="font-semibold">${item.purchasePrice.toFixed(2)}</span>
+                    <span className="font-semibold">${purchasePriceNum.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Selling Price:</span>
-                    <span className="font-bold text-primary">${item.sellingPrice.toFixed(2)}</span>
+                    <span className="font-bold text-primary">${sellingPriceNum.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Profit:</span>
