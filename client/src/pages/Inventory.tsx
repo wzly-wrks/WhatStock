@@ -75,126 +75,7 @@ export default function Inventory() {
     },
   });
 
-  // Mock items for initial state while API is being used
-  const mockItems = [
-    {
-      id: "1",
-      title: "Vintage Pokemon Card - Charizard Holo",
-      category: "Trading Cards",
-      condition: "Near Mint",
-      purchasePrice: "150.00",
-      sellingPrice: "299.99",
-      quantity: 1,
-      weight: "0.01",
-      status: "in_stock" as const,
-      imageUrl: "https://images.unsplash.com/photo-1606503153255-59d9b231b8f5?w=400&h=400&fit=crop",
-      tags: ["Pokemon", "Holo", "Rare"],
-      description: "First edition holographic Charizard in near mint condition.",
-      isGiveaway: 0,
-      buyerName: null,
-      buyerEmail: null,
-      soldDate: null,
-      subCategory: null,
-      createdAt: new Date(),
-    },
-    {
-      id: "2",
-      title: "Funko Pop - Iron Man #01",
-      category: "Collectibles",
-      condition: "Mint",
-      purchasePrice: "45.00",
-      sellingPrice: "89.99",
-      quantity: 3,
-      weight: "0.5",
-      status: "sold" as const,
-      tags: ["Funko", "Marvel"],
-      description: "Original Iron Man Funko Pop in mint condition with box.",
-      isGiveaway: 0,
-      buyerName: null,
-      buyerEmail: null,
-      soldDate: null,
-      subCategory: null,
-      createdAt: new Date(),
-    },
-    {
-      id: "3",
-      title: "Sealed Nike Sneakers - Air Jordan 1",
-      category: "Shoes",
-      condition: "New",
-      purchasePrice: "200.00",
-      sellingPrice: "450.00",
-      quantity: 1,
-      weight: "2.5",
-      status: "draft" as const,
-      tags: ["Sneakers", "Limited"],
-      description: "Brand new Air Jordan 1 sneakers, sealed in original box.",
-      isGiveaway: 0,
-      buyerName: null,
-      buyerEmail: null,
-      soldDate: null,
-      subCategory: null,
-      createdAt: new Date(),
-    },
-    {
-      id: "4",
-      title: "Magic The Gathering - Black Lotus",
-      category: "Trading Cards",
-      condition: "Excellent",
-      purchasePrice: "5000.00",
-      sellingPrice: "8500.00",
-      quantity: 1,
-      weight: "0.01",
-      status: "in_stock" as const,
-      tags: ["MTG", "Power Nine"],
-      description: "Black Lotus from Alpha set, excellent condition with minimal wear.",
-      isGiveaway: 0,
-      buyerName: null,
-      buyerEmail: null,
-      soldDate: null,
-      subCategory: null,
-      createdAt: new Date(),
-    },
-    {
-      id: "5",
-      title: "Signed Baseball - Babe Ruth",
-      category: "Sports Memorabilia",
-      condition: "Good",
-      purchasePrice: "1200.00",
-      sellingPrice: "2500.00",
-      quantity: 1,
-      weight: "0.3",
-      status: "in_stock" as const,
-      tags: ["Baseball", "Autographed"],
-      description: "Authentic Babe Ruth signed baseball with certificate of authenticity.",
-      isGiveaway: 0,
-      buyerName: null,
-      buyerEmail: null,
-      soldDate: null,
-      subCategory: null,
-      createdAt: new Date(),
-    },
-    {
-      id: "6",
-      title: "Supreme Box Logo Hoodie",
-      category: "Fashion",
-      condition: "Near Mint",
-      purchasePrice: "300.00",
-      sellingPrice: "650.00",
-      quantity: 2,
-      weight: "1.2",
-      status: "in_stock" as const,
-      tags: ["Supreme", "Streetwear"],
-      description: "Supreme Box Logo hoodie in near mint condition, size large.",
-      isGiveaway: 0,
-      buyerName: null,
-      buyerEmail: null,
-      soldDate: null,
-      subCategory: null,
-      createdAt: new Date(),
-    },
-  ];
-
-  const rawItems = isLoading ? mockItems : items;
+  const rawItems = items;
 
   const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredItems = rawItems.filter((item) => {
@@ -213,7 +94,11 @@ export default function Inventory() {
 
   const displayItems = filteredItems;
 
-  const allTags = ["Pokemon", "Holo", "Rare", "Funko", "Marvel", "Sneakers", "Limited", "MTG", "Power Nine", "Autographed", "Baseball", "Supreme", "Streetwear"];
+  const allTags = Array.from(
+    new Set(
+      rawItems.flatMap((item) => item.tags ?? [])
+    )
+  ).sort();
 
   return (
     <div className="space-y-6">
@@ -313,14 +198,16 @@ export default function Inventory() {
                 : "space-y-4"
             }
           >
-            {displayItems.length === 0 ? (
+            {isLoading ? (
+              <div className="col-span-full flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+                <p className="text-sm">Loading your inventory...</p>
+              </div>
+            ) : displayItems.length === 0 ? (
               <div className="col-span-full flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-8 text-center text-muted-foreground">
                 <p className="text-sm">No items match your filters yet.</p>
-                {!isLoading && (
-                  <Button size="sm" onClick={() => setAddDialogOpen(true)}>
-                    Add your first item
-                  </Button>
-                )}
+                <Button size="sm" onClick={() => setAddDialogOpen(true)}>
+                  Add your first item
+                </Button>
               </div>
             ) : (
               displayItems.map((item: any) => (

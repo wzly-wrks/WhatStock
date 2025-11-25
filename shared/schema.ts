@@ -38,7 +38,14 @@ export const inventoryItems = pgTable("inventory_items", {
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
 });
 
-export const insertInventoryItemSchema = createInsertSchema(inventoryItems).omit({
+export const insertInventoryItemSchema = createInsertSchema(inventoryItems, {
+  purchasePrice: z.coerce.number(),
+  sellingPrice: z.coerce.number(),
+  quantity: z.coerce.number().int().min(1),
+  weight: z.coerce.number().optional(),
+  tags: z.array(z.string()).optional(),
+  isGiveaway: z.coerce.number().int().optional(),
+}).omit({
   id: true,
   createdAt: true,
 });
