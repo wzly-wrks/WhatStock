@@ -64,6 +64,14 @@ export default function Inventory() {
     },
   });
 
+  const unmarkAsSoldMutation = useMutation({
+    mutationFn: (id: string) => apiRequest("POST", `/api/inventory/${id}/unsold`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/inventory"] });
+      setDetailModalOpen(false);
+    },
+  });
+
   // Edit item mutation
   const editItemMutation = useMutation({
     mutationFn: (item: InventoryItem) =>
@@ -266,6 +274,7 @@ export default function Inventory() {
           onMarkAsSold={(buyerName, buyerEmail) => {
             markAsSoldMutation.mutate({ id: selectedItem.id, buyerName, buyerEmail });
           }}
+          onUnmarkSold={() => unmarkAsSoldMutation.mutate(selectedItem.id)}
         />
       )}
       <FloatingActionButton onClick={() => setAddDialogOpen(true)} />

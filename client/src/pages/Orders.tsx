@@ -1,9 +1,29 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { OrdersTable } from "@/components/OrdersTable";
 import { StatsCard } from "@/components/StatsCard";
 import { DollarSign, TrendingUp, ShoppingCart, Package } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import type { InventoryItem } from "@shared/schema";
+
+type OrderStatus = "completed" | "pending" | "shipped";
+
+type OrderBase = {
+  id: string;
+  itemTitle: string;
+  buyer: string;
+  saleDate: string;
+  purchasePrice: number;
+  salePrice: number;
+  profit: number;
+  status: OrderStatus;
+};
+
+type OrderWithProgress = OrderBase & {
+  printedLabel: boolean;
+  packed: boolean;
+  shipped: boolean;
+};
 
 export default function Orders() {
   const { data: items = [], isLoading } = useQuery({
@@ -14,9 +34,11 @@ export default function Orders() {
     },
   });
 
+  const [orderProgress, setOrderProgress] = useState<Record<string, { printedLabel: boolean; packed: boolean; shipped: boolean }>>({});
+
   const soldItems = items.filter((item) => item.status === "sold");
 
-  const orders = soldItems.map((item) => {
+  const orders: OrderBase[] = soldItems.map((item) => {
     const purchasePrice =
       typeof item.purchasePrice === "string"
         ? parseFloat(item.purchasePrice)
@@ -38,9 +60,54 @@ export default function Orders() {
       purchasePrice,
       salePrice,
       profit: salePrice - purchasePrice,
-      status: item.soldDate ? "completed" as const : "pending" as const,
+      status: item.soldDate ? "completed" : "pending",
     };
   });
+
+  useEffect(() => {
+    setOrderProgress((prev) => {
+      const next = { ...prev };
+      const activeIds = new Set<string>();
+
+      orders.forEach((order) => {
+        activeIds.add(order.id);
+        if (!next[order.id]) {
+          next[order.id] = { printedLabel: false, packed: false, shipped: false };
+        }
+      });
+
+      Object.keys(next).forEach((id) => {
+        if (!activeIds.has(id)) {
+          delete next[id];
+        }
+      });
+
+      return next;
+    });
+  }, [orders]);
+
+  const ordersWithProgress: OrderWithProgress[] = orders.map((order) => {
+    const progress = orderProgress[order.id] ?? { printedLabel: false, packed: false, shipped: false };
+    return {
+      ...order,
+      printedLabel: progress.printedLabel,
+      packed: progress.packed,
+      shipped: progress.shipped,
+      status: progress.shipped ? "shipped" as const : order.status,
+    };
+  });
+
+  const handleProgressChange = (orderId: string, field: "printedLabel" | "packed" | "shipped", value: boolean) => {
+    setOrderProgress((prev) => ({
+      ...prev,
+      [orderId]: {
+        printedLabel: prev[orderId]?.printedLabel ?? false,
+        packed: prev[orderId]?.packed ?? false,
+        shipped: prev[orderId]?.shipped ?? false,
+        [field]: value,
+      },
+    }));
+  };
 
   const totalRevenue = orders.reduce((sum, order) => sum + order.salePrice, 0);
   const totalProfit = orders.reduce((sum, order) => sum + order.profit, 0);
@@ -88,8 +155,9 @@ export default function Orders() {
           </div>
         ) : (
           <OrdersTable
-            orders={orders}
+            orders={ordersWithProgress}
             onViewDetails={(id) => console.log("View order details:", id)}
+            onProgressChange={handleProgressChange}
           />
         )}
       </div>

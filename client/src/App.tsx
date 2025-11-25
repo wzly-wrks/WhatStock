@@ -41,7 +41,7 @@ function App() {
               <header className="flex items-center gap-4 border-b px-6 py-3 bg-card">
                 <SidebarTrigger data-testid="button-sidebar-toggle" />
                 <h1 className="font-heading font-bold text-xl text-primary">
-                  LootLedger
+                  WhatStock
                 </h1>
               </header>
               <main className="flex-1 overflow-auto p-6 bg-background">

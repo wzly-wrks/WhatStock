@@ -68,6 +68,14 @@ export default function Dashboard() {
     },
   });
 
+  const unmarkAsSoldMutation = useMutation({
+    mutationFn: (id: string) => apiRequest("POST", `/api/inventory/${id}/unsold`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/inventory"] });
+      setDetailModalOpen(false);
+    },
+  });
+
   const recentItems = items.slice(0, 4);
 
   // Calculate stats
@@ -179,6 +187,9 @@ export default function Dashboard() {
               tags={item.tags || undefined}
               weight={item.weight || undefined}
               isGiveaway={item.isGiveaway === 1}
+              buyerName={item.buyerName}
+              buyerEmail={item.buyerEmail}
+              soldDate={item.soldDate ? new Date(item.soldDate).toISOString() : null}
               onClick={() => {
                 setSelectedItem(item);
                 setDetailModalOpen(true);
@@ -228,6 +239,7 @@ export default function Dashboard() {
           onMarkAsSold={(buyerName, buyerEmail) => {
             markAsSoldMutation.mutate({ id: selectedItem.id, buyerName, buyerEmail });
           }}
+          onUnmarkSold={() => unmarkAsSoldMutation.mutate(selectedItem.id)}
         />
       )}
       <FloatingActionButton onClick={() => setAddDialogOpen(true)} />

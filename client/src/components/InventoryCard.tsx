@@ -16,6 +16,9 @@ interface InventoryCardProps {
   tags?: string[];
   weight?: number | string;
   isGiveaway?: boolean;
+  buyerName?: string | null;
+  buyerEmail?: string | null;
+  soldDate?: string | Date | null;
   onClick?: () => void;
   onEdit?: () => void;
   onDuplicate?: () => void;
@@ -35,6 +38,9 @@ export function InventoryCard({
   tags = [],
   weight,
   isGiveaway = false,
+  buyerName,
+  buyerEmail,
+  soldDate,
   onClick,
   onEdit,
   onDuplicate,
@@ -167,6 +173,26 @@ export function InventoryCard({
           </div>
         </div>
       </CardContent>
+      {status === "sold" && (
+        <div className="px-6 pb-3 space-y-1 text-xs">
+          <div className="flex justify-between text-muted-foreground">
+            <span>Buyer</span>
+            <span className="font-semibold text-foreground">{buyerName || "Unknown"}</span>
+          </div>
+          {buyerEmail && (
+            <div className="flex justify-between text-muted-foreground">
+              <span>Email</span>
+              <span className="font-semibold text-foreground">{buyerEmail}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-muted-foreground">
+            <span>Sold</span>
+            <span className="font-semibold text-foreground">
+              {soldDate ? new Date(soldDate).toLocaleDateString() : "Pending"}
+            </span>
+          </div>
+        </div>
+      )}
       <CardFooter className="pt-2 border-t border-card-border flex items-center justify-between text-xs">
         <div className="text-muted-foreground">Qty: {quantity}</div>
         <div className={`font-bold flex items-center gap-1 ${profit >= 0 ? 'text-primary' : 'text-destructive'}`}>
