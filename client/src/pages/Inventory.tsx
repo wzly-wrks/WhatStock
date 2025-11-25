@@ -7,7 +7,7 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { ItemDetailModal } from "@/components/ItemDetailModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Grid3x3, List } from "lucide-react";
+import { Search, Grid3x3, List, Filter, X } from "lucide-react";
 
 export default function Inventory() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -16,6 +16,7 @@ export default function Inventory() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(true);
 
   const [items, setItems] = useState([
     {
@@ -135,6 +136,14 @@ export default function Inventory() {
         </div>
         <div className="flex gap-2">
           <Button
+            variant={filtersOpen ? "default" : "outline"}
+            size="icon"
+            onClick={() => setFiltersOpen(!filtersOpen)}
+            data-testid="button-toggle-filters"
+          >
+            {filtersOpen ? <X className="w-4 h-4" /> : <Filter className="w-4 h-4" />}
+          </Button>
+          <Button
             variant={viewMode === "grid" ? "default" : "outline"}
             size="icon"
             onClick={() => setViewMode("grid")}
@@ -153,10 +162,12 @@ export default function Inventory() {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-[280px_1fr] gap-6">
-        <div>
-          <FilterSidebar onFilterChange={(filters) => console.log("Filters:", filters)} />
-        </div>
+      <div className={`grid gap-6 transition-all duration-300 ${filtersOpen ? "lg:grid-cols-[280px_1fr]" : "grid-cols-1"}`}>
+        {filtersOpen && (
+          <div className="animate-slide-up">
+            <FilterSidebar onFilterChange={(filters) => console.log("Filters:", filters)} />
+          </div>
+        )}
 
         <div>
           <div className="mb-4 text-sm text-muted-foreground">
