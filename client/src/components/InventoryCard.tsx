@@ -1,4 +1,4 @@
-import { Edit, Copy, Trash2 } from "lucide-react";
+import { Edit, Copy, Trash2, Gift } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,10 +15,12 @@ interface InventoryCardProps {
   imageUrl?: string;
   tags?: string[];
   weight?: number;
+  isGiveaway?: boolean;
   onClick?: () => void;
   onEdit?: () => void;
   onDuplicate?: () => void;
   onDelete?: () => void;
+  onToggleGiveaway?: () => void;
 }
 
 export function InventoryCard({
@@ -32,10 +34,12 @@ export function InventoryCard({
   imageUrl,
   tags = [],
   weight,
+  isGiveaway = false,
   onClick,
   onEdit,
   onDuplicate,
   onDelete,
+  onToggleGiveaway,
 }: InventoryCardProps) {
   const profit = sellingPrice - purchasePrice;
   const profitPercentage = ((profit / purchasePrice) * 100).toFixed(0);
@@ -67,8 +71,23 @@ export function InventoryCard({
           <Button
             size="icon"
             variant="secondary"
+            className={`h-8 w-8 backdrop-blur-sm ${isGiveaway ? 'bg-chart-3 hover:bg-chart-3/80' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleGiveaway?.();
+            }}
+            data-testid="button-toggle-giveaway"
+          >
+            <Gift className={`w-4 h-4 ${isGiveaway ? 'fill-current' : ''}`} />
+          </Button>
+          <Button
+            size="icon"
+            variant="secondary"
             className="h-8 w-8 backdrop-blur-sm"
-            onClick={onEdit}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit?.();
+            }}
             data-testid="button-edit-item"
           >
             <Edit className="w-4 h-4" />
@@ -77,7 +96,10 @@ export function InventoryCard({
             size="icon"
             variant="secondary"
             className="h-8 w-8 backdrop-blur-sm"
-            onClick={onDuplicate}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDuplicate?.();
+            }}
             data-testid="button-duplicate-item"
           >
             <Copy className="w-4 h-4" />
@@ -86,15 +108,25 @@ export function InventoryCard({
             size="icon"
             variant="destructive"
             className="h-8 w-8 backdrop-blur-sm"
-            onClick={onDelete}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete?.();
+            }}
             data-testid="button-delete-item"
           >
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
-        <Badge className={`absolute top-2 left-2 text-xs font-bold ${statusConfig[status].className}`}>
-          {statusConfig[status].label}
-        </Badge>
+        <div className="absolute top-2 left-2 flex gap-2">
+          <Badge className={`text-xs font-bold ${statusConfig[status].className}`}>
+            {statusConfig[status].label}
+          </Badge>
+          {isGiveaway && (
+            <Badge className="text-xs font-bold bg-chart-3 text-black">
+              Giveaway
+            </Badge>
+          )}
+        </div>
       </div>
       <CardHeader className="space-y-2 pb-2">
         <h3 className="font-heading font-bold text-sm line-clamp-2" data-testid="text-item-title">

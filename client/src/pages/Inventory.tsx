@@ -17,8 +17,7 @@ export default function Inventory() {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
-  //todo: remove mock inventory data
-  const items = [
+  const [items, setItems] = useState([
     {
       id: "1",
       title: "Vintage Pokemon Card - Charizard Holo",
@@ -32,6 +31,7 @@ export default function Inventory() {
       imageUrl: "https://images.unsplash.com/photo-1606503153255-59d9b231b8f5?w=400&h=400&fit=crop",
       tags: ["Pokemon", "Holo", "Rare"],
       description: "First edition holographic Charizard in near mint condition.",
+      isGiveaway: false,
     },
     {
       id: "2",
@@ -45,6 +45,7 @@ export default function Inventory() {
       status: "sold" as const,
       tags: ["Funko", "Marvel"],
       description: "Original Iron Man Funko Pop in mint condition with box.",
+      isGiveaway: false,
     },
     {
       id: "3",
@@ -58,6 +59,7 @@ export default function Inventory() {
       status: "draft" as const,
       tags: ["Sneakers", "Limited"],
       description: "Brand new Air Jordan 1 sneakers, sealed in original box.",
+      isGiveaway: false,
     },
     {
       id: "4",
@@ -71,6 +73,7 @@ export default function Inventory() {
       status: "in_stock" as const,
       tags: ["MTG", "Power Nine"],
       description: "Black Lotus from Alpha set, excellent condition with minimal wear.",
+      isGiveaway: false,
     },
     {
       id: "5",
@@ -84,6 +87,7 @@ export default function Inventory() {
       status: "in_stock" as const,
       tags: ["Baseball", "Autographed"],
       description: "Authentic Babe Ruth signed baseball with certificate of authenticity.",
+      isGiveaway: false,
     },
     {
       id: "6",
@@ -97,8 +101,9 @@ export default function Inventory() {
       status: "in_stock" as const,
       tags: ["Supreme", "Streetwear"],
       description: "Supreme Box Logo hoodie in near mint condition, size large.",
+      isGiveaway: false,
     },
-  ];
+  ]);
 
   const allTags = ["Pokemon", "Holo", "Rare", "Funko", "Marvel", "Sneakers", "Limited", "MTG", "Power Nine", "Autographed", "Baseball", "Supreme", "Streetwear"];
 
@@ -169,6 +174,11 @@ export default function Inventory() {
                 onEdit={() => console.log("Edit", item.id)}
                 onDuplicate={() => console.log("Duplicate", item.id)}
                 onDelete={() => console.log("Delete", item.id)}
+                onToggleGiveaway={() => {
+                  setItems(items.map(i => 
+                    i.id === item.id ? { ...i, isGiveaway: !i.isGiveaway } : i
+                  ));
+                }}
               />
             ))}
           </div>

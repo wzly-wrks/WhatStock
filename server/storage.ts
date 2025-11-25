@@ -72,6 +72,7 @@ export class MemStorage implements IStorage {
       buyerName: insertItem.buyerName ?? null,
       buyerEmail: insertItem.buyerEmail ?? null,
       soldDate: insertItem.soldDate ?? null,
+      isGiveaway: insertItem.isGiveaway ?? 0,
       createdAt: new Date(),
     };
     this.inventoryItems.set(id, item);

@@ -9,8 +9,7 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 export default function Dashboard() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
-  //todo: remove mock inventory data
-  const recentItems = [
+  const [recentItems, setRecentItems] = useState([
     {
       id: "1",
       title: "Vintage Pokemon Card - Charizard Holo",
@@ -21,6 +20,7 @@ export default function Dashboard() {
       quantity: 1,
       status: "in_stock" as const,
       tags: ["Pokemon", "Holo", "Rare"],
+      isGiveaway: false,
     },
     {
       id: "2",
@@ -32,6 +32,7 @@ export default function Dashboard() {
       quantity: 3,
       status: "sold" as const,
       tags: ["Funko", "Marvel"],
+      isGiveaway: false,
     },
     {
       id: "3",
@@ -43,6 +44,7 @@ export default function Dashboard() {
       quantity: 1,
       status: "draft" as const,
       tags: ["Sneakers", "Limited"],
+      isGiveaway: false,
     },
     {
       id: "4",
@@ -54,8 +56,9 @@ export default function Dashboard() {
       quantity: 1,
       status: "in_stock" as const,
       tags: ["MTG", "Power Nine"],
+      isGiveaway: false,
     },
-  ];
+  ]);
 
   return (
     <div className="space-y-6">
@@ -130,6 +133,11 @@ export default function Dashboard() {
               onEdit={() => console.log("Edit", item.id)}
               onDuplicate={() => console.log("Duplicate", item.id)}
               onDelete={() => console.log("Delete", item.id)}
+              onToggleGiveaway={() => {
+                setRecentItems(recentItems.map(i =>
+                  i.id === item.id ? { ...i, isGiveaway: !i.isGiveaway } : i
+                ));
+              }}
             />
           ))}
         </div>

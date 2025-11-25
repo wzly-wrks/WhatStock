@@ -34,6 +34,7 @@ export const inventoryItems = pgTable("inventory_items", {
   buyerName: text("buyer_name"),
   buyerEmail: text("buyer_email"),
   soldDate: timestamp("sold_date"),
+  isGiveaway: integer("is_giveaway").notNull().default(0),
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
 });
 
