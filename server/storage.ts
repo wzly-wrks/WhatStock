@@ -56,8 +56,22 @@ export class MemStorage implements IStorage {
   async createInventoryItem(insertItem: InsertInventoryItem): Promise<InventoryItem> {
     const id = randomUUID();
     const item: InventoryItem = {
-      ...insertItem,
+      title: insertItem.title,
+      category: insertItem.category,
+      condition: insertItem.condition,
+      purchasePrice: insertItem.purchasePrice,
+      sellingPrice: insertItem.sellingPrice,
+      quantity: insertItem.quantity ?? 1,
       id,
+      status: insertItem.status || "in_stock",
+      subCategory: insertItem.subCategory ?? null,
+      weight: insertItem.weight ?? null,
+      description: insertItem.description ?? null,
+      imageUrl: insertItem.imageUrl ?? null,
+      tags: insertItem.tags ?? null,
+      buyerName: insertItem.buyerName ?? null,
+      buyerEmail: insertItem.buyerEmail ?? null,
+      soldDate: insertItem.soldDate ?? null,
       createdAt: new Date(),
     };
     this.inventoryItems.set(id, item);
