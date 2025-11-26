@@ -1,6 +1,6 @@
 {
   "name": "whatstock",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "module",
   "license": "MIT",
   "description": "Inventory management application for Whatnot resellers",
@@ -8,7 +8,7 @@
     "name": "weezly.works",
     "email": "weezly@weezly.works"
   },
-  "main": "dist-electron/electron/main.js",
+  "main": "dist-electron/electron/main.cjs",
   "homepage": "./",
   "scripts": {
     "dev": "set NODE_ENV=development && tsx server/index-dev.ts",
@@ -16,10 +16,13 @@
     "start": "set NODE_ENV=production && node dist/index.js",
     "check": "tsc",
     "db:push": "drizzle-kit push",
-    "build:electron": "npm run build && tsc --project tsconfig.electron.json",
+    "build:electron": "npm run build && tsc --project tsconfig.electron.json && powershell -Command \"Remove-Item -Path dist-electron/electron/*.cjs -Force -ErrorAction SilentlyContinue; Move-Item -Path dist-electron/electron/main.js -Destination dist-electron/electron/main.cjs -Force; Move-Item -Path dist-electron/electron/preload.js -Destination dist-electron/electron/preload.cjs -Force\"",
     "build:win": "npm run build:electron && electron-builder --win",
     "build:mac": "npm run build:electron && electron-builder --mac",
-    "build:linux": "npm run build:electron && electron-builder --linux"
+    "build:linux": "npm run build:electron && electron-builder --linux",
+    "release:patch": "npm version patch --no-git-tag-version && npm run build:win",
+    "release:minor": "npm version minor --no-git-tag-version && npm run build:win",
+    "release:major": "npm version major --no-git-tag-version && npm run build:win"
   },
   "build": {
     "appId": "com.whatstock.app",
