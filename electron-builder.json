@@ -1,6 +1,6 @@
 {
-  "appId": "com.lootledger.app",
-  "productName": "LootLedger",
+  "appId": "com.whatstock.app",
+  "productName": "WhatStock",
   "directories": {
     "output": "release",
     "buildResources": "assets"
@@ -38,7 +38,7 @@
     "allowToChangeInstallationDirectory": true,
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "LootLedger"
+    "shortcutName": "WhatStock"
   },
   "portable": {
     "artifactName": "${productName}-${version}-portable.exe"

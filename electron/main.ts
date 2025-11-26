@@ -1,10 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import * as path from 'path';
 import { spawn } from 'child_process';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 let mainWindow: BrowserWindow | null = null;
 let serverProcess: any = null;
@@ -122,9 +118,9 @@ function createMenu() {
       label: 'Help',
       submenu: [
         {
-          label: 'About LootLedger',
+          label: 'About WhatStock',
           click: () => {
-            console.log('LootLedger - Whatnot Inventory Manager v1.0.0');
+            console.log('WhatStock - Whatnot Inventory Manager v1.0.0');
           },
         },
       ],
