@@ -1,7 +1,6 @@
 import { StatsCard } from "@/components/StatsCard";
 import { InventoryCard } from "@/components/InventoryCard";
 import { Package, DollarSign, TrendingUp, ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { AddItemDialog } from "@/components/AddItemDialog";
@@ -119,56 +118,55 @@ export default function Dashboard() {
           value={totalItems}
           subtitle={`${inStock} in stock`}
           icon={Package}
-          trend={{ value: 12, isPositive: true }}
-        />
+          trend={{ value: 12, isPositive: true }} />
         <StatsCard
           title="Total Value"
           value={`$${totalValue.toFixed(0)}`}
           subtitle="Inventory worth"
           icon={DollarSign}
-          trend={{ value: 8, isPositive: true }}
-        />
+          trend={{ value: 8, isPositive: true }} />
         <StatsCard
           title="Profit Margin"
           value={`${profitMargin}%`}
           subtitle="Average markup"
           icon={TrendingUp}
-          trend={{ value: 3, isPositive: true }}
-        />
+          trend={{ value: 3, isPositive: true }} />
         <StatsCard
           title="Orders"
           value={items.filter(i => i.status === 'sold').length}
           subtitle="Total sold"
           icon={ShoppingCart}
-          trend={{ value: 15, isPositive: true }}
-        />
+          trend={{ value: 15, isPositive: true }} />
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-start justify-between mb-4">
           <h2 className="text-2xl font-heading font-bold">Recent Items</h2>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">Card Size:</span>
-            <input
-              type="range"
-              min="1"
-              max="3"
-              defaultValue="2"
-              className="w-32 accent-primary"
-              data-testid="slider-card-size"
-              onChange={(e) => {
-                const value = e.target.value;
-                const cardGrid = document.getElementById('recent-items-grid');
-                if (cardGrid) {
-                  cardGrid.className = value === '1' 
-                    ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4'
-                    : value === '2'
-                    ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
-                    : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
-                }
-              }}
-            />
-            <span className="text-xs text-muted-foreground">({4} per row)</span>
+          <div className="flex flex-col items-end gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground">Card Size:</span>
+              <input
+                type="range"
+                min="1"
+                max="3"
+                defaultValue="2"
+                className="w-32 accent-primary"
+                data-testid="slider-card-size"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const cardGrid = document.getElementById('recent-items-grid');
+                  if (cardGrid) {
+                    cardGrid.className = value === '1'
+                      ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4'
+                      : value === '2'
+                        ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'
+                        : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
+                  }
+                }}
+              />
+              <span className="text-xs text-muted-foreground">({4} per row)</span>
+            </div>
+            <FloatingActionButton onClick={() => setAddDialogOpen(true)} />
           </div>
         </div>
         <div id="recent-items-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -193,21 +191,20 @@ export default function Dashboard() {
               onClick={() => {
                 setSelectedItem(item);
                 setDetailModalOpen(true);
-              }}
+              } }
               onEdit={() => {
                 setEditingItem(item);
                 setEditDialogOpen(true);
-              }}
+              } }
               onDuplicate={() => console.log("Duplicate", item.id)}
               onDelete={() => deleteItemMutation.mutate(item.id)}
-              onToggleGiveaway={() => toggleGiveawayMutation.mutate(item)}
-            />
+              onToggleGiveaway={() => toggleGiveawayMutation.mutate(item)} />
           ))}
         </div>
       </div>
 
-      <AddItemDialog 
-        open={addDialogOpen} 
+      <AddItemDialog
+        open={addDialogOpen}
         onOpenChange={setAddDialogOpen}
         onSubmit={async (data) => {
           try {
@@ -221,16 +218,16 @@ export default function Dashboard() {
           } catch (error) {
             console.error("Failed to add item:", error);
           }
-        }}
-      />
+        } } />
+
       <EditItemDialog
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
         item={editingItem}
         onSave={(updatedItem) => {
           editItemMutation.mutate(updatedItem);
-        }}
-      />
+        } } />
+
       {selectedItem && (
         <ItemDetailModal
           open={detailModalOpen}
@@ -242,7 +239,6 @@ export default function Dashboard() {
           onUnmarkSold={() => unmarkAsSoldMutation.mutate(selectedItem.id)}
         />
       )}
-      <FloatingActionButton onClick={() => setAddDialogOpen(true)} />
     </div>
   );
 }
