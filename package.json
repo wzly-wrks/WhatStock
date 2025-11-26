@@ -1,6 +1,6 @@
 {
   "name": "whatstock",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "license": "MIT",
   "description": "Inventory management application for Whatnot resellers",

@@ -1,9 +1,9 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import * as path from 'path';
-import { spawn } from 'child_process';
+import { spawn, fork, ChildProcess } from 'child_process';
 
 let mainWindow: BrowserWindow | null = null;
-let serverProcess: any = null;
+let serverProcess: ChildProcess | null = null;
 
 const isDev = process.env.NODE_ENV === 'development';
 const port = 5000;
@@ -34,13 +34,24 @@ function createWindow() {
   });
 }
 
-function startServer() {
+function startServer(): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    const serverScript = isDev
-      ? path.join(__dirname, '../server/index-dev.ts')
-      : path.join(__dirname, '../dist/index.js');
+    let serverScript: string;
+    
+    if (app.isPackaged) {
+      // In production, the server is in resources/app.asar/dist/index.js
+      serverScript = path.join(process.resourcesPath, 'app.asar', 'dist', 'index.js');
+    } else {
+      serverScript = isDev
+        ? path.join(__dirname, '..', 'server', 'index-dev.ts')
+        : path.join(__dirname, '..', 'dist', 'index.js');
+    }
 
-    const env = { ...process.env, NODE_ENV: isDev ? 'development' : 'production' };
+    const env = { 
+      ...process.env, 
+      NODE_ENV: isDev ? 'development' : 'production',
+      PORT: String(port)
+    };
 
     try {
       if (isDev) {
@@ -48,16 +59,17 @@ function startServer() {
         serverProcess = spawn('npx', ['tsx', serverScript], {
           env,
           stdio: 'inherit',
+          shell: true,
         });
       } else {
-        // In production, run compiled JavaScript
-        serverProcess = spawn('node', [serverScript], {
+        // In production, fork the JavaScript file
+        serverProcess = fork(serverScript, [], {
           env,
           stdio: 'inherit',
         });
       }
 
-      serverProcess.on('error', (err: any) => {
+      serverProcess.on('error', (err: Error) => {
         console.error('Failed to start server:', err);
         reject(err);
       });
@@ -65,6 +77,7 @@ function startServer() {
       // Give server time to start
       setTimeout(() => resolve(true), 2000);
     } catch (err) {
+      console.error('Error spawning server:', err);
       reject(err);
     }
   });
@@ -105,13 +118,6 @@ function createMenu() {
             if (mainWindow) mainWindow.reload();
           },
         },
-        {
-          label: 'Toggle Developer Tools',
-          accelerator: 'F12',
-          click: () => {
-            if (mainWindow) mainWindow.webContents.toggleDevTools();
-          },
-        },
       ],
     },
     {
@@ -120,7 +126,13 @@ function createMenu() {
         {
           label: 'About WhatStock',
           click: () => {
-            console.log('WhatStock - Whatnot Inventory Manager v1.0.0');
+            const { dialog } = require('electron');
+            dialog.showMessageBox({
+              type: 'info',
+              title: 'About WhatStock',
+              message: 'WhatStock v' + app.getVersion(),
+              detail: 'Inventory management for Whatnot resellers.\n\nBuilt by weezly.works'
+            });
           },
         },
       ],
