@@ -262,9 +262,9 @@ WhatStock stores all your data locally using browser localStorage. This means:
 - ✅ Giveaway tracking
 - ✅ Persistent local storage
 - ✅ Lightweight desktop app (~2MB)
-- ⏳ Whatnot CSV export
+- ✅ Whatnot CSV export
 - ⏳ Image upload functionality
-- ⏳ Data import/export
+- ⏳ Data import/export (backup/restore)
 - ⏳ Order history analytics
 
 ## Contributing
